@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Proposal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background-color: #ffe6f2;
+            color: #d63384;
+            margin-top: 50px;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 30px;
+            font-weight: 600;
+        }
+        /* Button Styles */
+        .btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 15px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            font-weight: 400;
+            transition: all 0.3s ease-in-out;
+            display: block;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            transform: translateY(0px);
+        }
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        /* Positive (Green) */
+        .btn-positive {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-positive:hover {
+            background-color: #218838;
+        }
+        /* Negative (Red) */
+        .btn-negative {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-negative:hover {
+            background-color: #c82333;
+        }
+        img {
+            width: 250px;
+            height: auto;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .love-shower {
+            font-size: 50px;
+            color: red;
+            font-weight: 600;
+            animation: loveFade 1.5s infinite alternate;
+        }
+        @keyframes loveFade {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1 -->
+    <div id="page1">
+        <h1>Will you be my Valentine, Ujju? ❤️</h1>
+        <img src="img1.png" alt="Cute Love">
+        <br>
+        <button class="btn btn-negative" onclick="nextPage('page2', 'sound1.mp3')">Bilkul Nhi 😡</button>
+        <button class="btn btn-positive" onclick="nextPage('page2', 'sound1.mp3')">Sochna Pdega 🤔</button>
+    </div>
+
+    <!-- Page 2 -->
+    <div id="page2" style="display: none;">
+        <h1>Kya sochna pdega yaar! 🤨</h1>
+        <img src="img2.png" alt="Thinking Emoji">
+        <br>
+        <button class="btn btn-positive" onclick="nextPage('page3', 'sound2.mp3')">Gini Mini se puchna pdega 🤷‍♀️</button>
+        <button class="btn btn-negative" onclick="alert('Mumma se puchna pdega? Ab kya bataun 😅')">Mumma se puchna pdega 🤦‍♂️</button>
+    </div>
+
+    <!-- Page 3 -->
+    <div id="page3" style="display: none;">
+        <h1>Cutie Gini and Cutie Mini ki taraf se Haan hai! 😍<br>Now your turn...</h1>
+        <img src="img3.png" alt="Cute Animals">
+        <br>
+        <button class="btn btn-positive" id="yesBtn" onclick="moveYesButton()">Yes 😘</button>
+        <button class="btn btn-negative" id="hateBtn" onclick="changeHateButtonText(this)">I hate you 😡</button>
+    </div>
+
+    <!-- Final Page -->
+    <div id="finalPage" style="display: none;">
+        <h1 class="love-shower">Wowwww! I love youuuu so much! ❤️💖💞💕💗💓💘💝</h1>
+        <img src="img4.png" alt="Love Shower">
+    </div>
+
+    <script>
+        let yesClickCount = 0;
+        let audio = new Audio(); // Global audio variable
+
+        function playLoopingSound(soundFile) {
+            if (!audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+            audio = new Audio(soundFile);
+            audio.loop = true; // Make it repeat
+            audio.play();
+        }
+
+        function nextPage(pageId, soundFile) {
+            // Play new sound in loop
+            if (soundFile) {
+                playLoopingSound(soundFile);
+            }
+
+            // Hide all divs and show the selected one
+            document.querySelectorAll('div').forEach(div => div.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+
+            // Play "Pehli Dafa" on the final page in loop
+            if (pageId === 'finalPage') {
+                playLoopingSound('pehli_dafa.mp3');
+            }
+        }
+
+        function moveYesButton() {
+            yesClickCount++;
+            if (yesClickCount < 5) {
+                let yesBtn = document.getElementById("yesBtn");
+                let x = Math.random() * (window.innerWidth - 200);
+                let y = Math.random() * (window.innerHeight - 100);
+                yesBtn.style.position = "absolute";
+                yesBtn.style.left = x + "px";
+                yesBtn.style.top = y + "px";
+            } else {
+                nextPage('finalPage', 'pehli_dafa.mp3'); // Play Pehli Dafa when final page appears
+            }
+        }
+
+        function changeHateButtonText(button) {
+            button.textContent = "Pyaar me hi Nafrat hai ❤️";
+        }
+
+        // Play the first song immediately when page loads
+        window.onload = function () {
+            playLoopingSound('sound1.mp3');
+        };
+    </script>
+
+</body>
+</html>
